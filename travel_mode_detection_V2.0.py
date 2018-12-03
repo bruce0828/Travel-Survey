@@ -14,6 +14,8 @@ import pyproj
 import math
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.neural_network import MLPClassifier
+from mlxtend.classifier import StackingClassifier
 from sklearn.cluster import KMeans
 from sklearn.svm import SVC
 from scipy.stats import mode
@@ -821,7 +823,6 @@ acc_gbdt = ar.accuracy(res_gbdt.yp_smth,res_gbdt.yt_smth)
 
 
 # 神经网络
-from sklearn.neural_network import MLPClassifier
 MLP = MLPClassifier(hidden_layer_sizes=(160,))
 MLP = MLP.fit(x_train,y_train)
 mp4 = Model_Prediciton(MLP,mm,ss)
@@ -855,8 +856,6 @@ ar.accuracy(res_stack.y_pred,res_rf.yt_smth)
 # In[290]:
 
 # stacking
-from mlxtend.classifier import StackingClassifier
-
 stacking = StackingClassifier(classifiers=[RF,SVM,GBDT,MLP,DHMM],meta_classifier=RF)
 stacking = stacking.fit(x_train,y_train)
 mp_s = Model_Prediciton(stacking,mm,ss)
