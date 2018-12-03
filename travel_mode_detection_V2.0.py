@@ -769,11 +769,8 @@ A, B, PI = DHMM.learning(x_train,y_train,l_seq)
 y_pred_dhmm, y_test_dhmm = DHMM.recognation_set(A,B,PI,test_set)
 res_dhmm = ar.results(y_pred_dhmm,y_test_dhmm)
 acc_dhmm = ar.accuracy(res_dhmm.y_pred,res_dhmm.yt_smth)
-acc_dhmm
-
 
 # In[162]:
-
 
 ar.accuracy(res_dhmm.yp_smth,res_dhmm.yt_smth)
 
@@ -788,7 +785,6 @@ mp = Model_Prediciton(RF,mm,ss)
 y_pred_rf, y_test_rf = mp.predict_set(test_set)
 res_rf = ar.results(y_pred_rf,y_test_rf)
 acc_rf = ar.accuracy(res_rf.yp_smth,res_rf.yt_smth)
-acc_rf
 
 
 # In[23]:
@@ -801,7 +797,6 @@ mp2 = Model_Prediciton(SVM,mm,ss)
 y_pred_svm, y_test_svm = mp2.predict_set(test_set)
 res_svm = ar.results(y_pred_svm,y_test_svm)
 acc_svm = ar.accuracy(res_svm.yp_smth,res_svm.yt_smth)
-acc_svm
 
 
 # In[161]:
@@ -820,7 +815,6 @@ mp3 = Model_Prediciton(GBDT,mm,ss)
 y_pred_gbdt, y_test_gbdt = mp3.predict_set(test_set)
 res_gbdt = ar.results(y_pred_gbdt,y_test_gbdt)
 acc_gbdt = ar.accuracy(res_gbdt.yp_smth,res_gbdt.yt_smth)
-acc_gbdt
 
 
 # In[174]:
@@ -834,7 +828,6 @@ mp4 = Model_Prediciton(MLP,mm,ss)
 y_pred_mlp, y_test_mlp = mp4.predict_set(test_set)
 res_mlp = ar.results(y_pred_mlp,y_test_mlp)
 acc_mlp = ar.accuracy(res_mlp.yp_smth,res_mlp.yt_smth)
-acc_mlp
 
 
 # In[175]:
@@ -851,7 +844,8 @@ ar.accuracy(res_mlp.y_pred,res_mlp.yt_smth)
 
 stack = []
 for i in range(len(res_rf)):
-    res_matr = np.r_[res_rf.loc[i,'y_pred'],res_dhmm.loc[i,'y_pred'],res_svm.loc[i,'y_pred'],                  res_gbdt.loc[i,'y_pred'],res_mlp.loc[i,'y_pred']].reshape(5,-1)[0]
+    res_matr = np.r_[res_rf.loc[i,'y_pred'],res_dhmm.loc[i,'y_pred'],res_svm.loc[i,'y_pred'], \
+                     res_gbdt.loc[i,'y_pred'],res_mlp.loc[i,'y_pred']].reshape(5,-1)[0]
     stack.append([i,res_matr])
 
 res_stack = pd.DataFrame(stack,columns=['index','y_pred'])
@@ -860,21 +854,15 @@ ar.accuracy(res_stack.y_pred,res_rf.yt_smth)
 
 # In[290]:
 
-
-from mlxtend.classifier import StackingClassifier
-from sklearn import model_selection
-
-
-# In[294]:
-
 # stacking
+from mlxtend.classifier import StackingClassifier
+
 stacking = StackingClassifier(classifiers=[RF,SVM,GBDT,MLP,DHMM],meta_classifier=RF)
 stacking = stacking.fit(x_train,y_train)
 mp_s = Model_Prediciton(stacking,mm,ss)
 y_pred_stack, y_test_stack = mp_s.predict_set(test_set)
 res_stack = ar.results(y_pred_stack,y_test_stack)
 acc_stack = ar.accuracy(res_stack.yp_smth,res_stack.yt_smth)
-acc_stack
 
 
 # In[ ]:
@@ -898,13 +886,6 @@ AM_train,AM_test = dd.read_dataset('AM_train'), dd.read_dataset('AM_test')
 PM_train,PM_test = dd.read_dataset('PM_train'), dd.read_dataset('PM_test')
 off_train,off_test =dd.read_dataset('off_train'), dd.read_dataset('off_test') 
 
-
-# In[213]:
-
-
-ss = Segmentation(step_size=30,start_point=0,overlap_rate=0)
-
-
 # In[218]:
 
 
@@ -915,7 +896,6 @@ mp_AM = Model_Prediciton(RF_AM,mm,ss)
 y_pred_AM, y_test_AM = mp_AM.predict_set(AM_test)
 res_AM = ar.results(y_pred_AM,y_test_AM)
 acc_AM = ar.accuracy(res_AM.yp_smth,res_AM.yt_smth)
-acc_AM
 
 
 # In[219]:
@@ -946,8 +926,6 @@ mp_PM = Model_Prediciton(RF_PM,mm,ss)
 y_pred_PM, y_test_PM = mp_PM.predict_set(PM_test)
 res_PM = ar.results(y_pred_PM,y_test_PM)
 acc_PM = ar.accuracy(res_PM.yp_smth,res_PM.yt_smth)
-acc_PM
-
 
 # In[223]:
 
@@ -977,7 +955,6 @@ mp_off = Model_Prediciton(RF_off,mm,ss)
 y_pred_off, y_test_off = mp_off.predict_set(off_test)
 res_off = ar.results(y_pred_off,y_test_off)
 acc_off = ar.accuracy(res_off.yp_smth,res_off.yt_smth)
-acc_off
 
 
 # In[227]:
